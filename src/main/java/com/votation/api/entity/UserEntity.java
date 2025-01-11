@@ -14,12 +14,12 @@ public class UserEntity {
     private UUID id;
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
     public UUID getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setId(UUID id) {
