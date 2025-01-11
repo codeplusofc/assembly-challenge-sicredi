@@ -1,19 +1,33 @@
 package com.votation.api.controller;
 
 import com.votation.api.entity.UserEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.votation.api.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private UserService userService;
+
     @GetMapping
-    public UserEntity getUser() {
-        UserEntity user = new UserEntity();
-
-        user.setNome("Rafael");
-
-        return user;
+    public List<UserEntity> getAllUsers() {
+        return userService.getAllUsers();
     }
+
+    @GetMapping("/{id}")
+    public UserEntity getUserById(@PathVariable UUID id) {
+        return userService.getUserById(id);
+    }
+
+    @PostMapping
+    public UserEntity postUser(@RequestBody UserEntity userEntity) {
+        return userService.postUser(userEntity);
+    }
+
 }
