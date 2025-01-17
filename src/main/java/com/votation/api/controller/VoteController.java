@@ -14,6 +14,7 @@ public class VoteController {
     @Autowired
     private VoteService voteService;
 
+    @GetMapping
     public List<VoteEntity> getAllVotes() {
         return voteService.getAllVotes();
     }
@@ -27,4 +28,16 @@ public class VoteController {
     public VoteEntity postVote(@RequestBody VoteEntity voteEntity) {
         return voteService.postVote(voteEntity);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteVote(@PathVariable UUID id) {
+        voteService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public VoteEntity updateVote(@PathVariable UUID id, @RequestBody VoteEntity voteEntity) {
+        return voteService.updateVoteById(id, voteEntity);
+    }
+
+    //TODO: Manter apenas funcionalidades de buscar por id, buscar todos os votos e inserir voto
 }

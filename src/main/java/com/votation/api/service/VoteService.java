@@ -29,4 +29,23 @@ public class VoteService {
 
         return response.get();
     }
+
+    public void deleteById(UUID id) {
+        var response = voteRepository.findById(id);
+        if (response.isEmpty()) {
+            throw new RuntimeException("Voto não encontrado");
+        }
+
+        voteRepository.deleteById(id);
+    }
+
+    public VoteEntity updateVoteById(UUID id, VoteEntity newVote) {
+        var response = voteRepository.findById(id);
+        if (response.isEmpty()) {
+            throw new RuntimeException("Voto não encontrado");
+        }
+
+        response.get().setVote(newVote.isVote());
+        return voteRepository.save(response.get());
+    }
 }

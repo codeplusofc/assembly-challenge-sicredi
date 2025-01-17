@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -29,5 +28,12 @@ public class UserController {
     public UserEntity postUser(@RequestBody UserEntity userEntity) {
         return userService.postUser(userEntity);
     }
+
+    @DeleteMapping("/{id}")
+    public void deletById(@PathVariable UUID id) {
+        userService.deletById(id);
+    }
+
+
 
 }
