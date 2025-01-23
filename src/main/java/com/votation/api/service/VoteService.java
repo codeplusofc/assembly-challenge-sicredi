@@ -1,11 +1,12 @@
 package com.votation.api.service;
 
+import com.votation.api.dto.VoteResultDto;
 import com.votation.api.entity.VoteEntity;
+import com.votation.api.repository.ScheduleRepository;
 import com.votation.api.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -13,39 +14,36 @@ public class VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+
     public VoteEntity postVote(VoteEntity voteEntity) {
         return voteRepository.save(voteEntity);
     }
 
-    public List<VoteEntity> getAllVotes() {
-        return voteRepository.findAll();
-    }
+    public VoteResultDto calculateVoteResult(UUID idSchedule) {
+        var votes = voteRepository.findByIdSchedule(idSchedule);
 
-    public VoteEntity getVoteById(UUID id) {
-        var response = voteRepository.findById(id);
-        if (response.isEmpty()) {
-            throw new RuntimeException("Voto não encontrato");
+        int yes = 0;
+        int no = 0;
+        String result = "result";
+
+        for (int i = 0; i < votes.size(); i++) {
+            if (votes.get(i).isVote()) {
+                yes++;
+            } else {
+                no++;
+            }
         }
 
-        return response.get();
-    }
-
-    public void deleteById(UUID id) {
-        var response = voteRepository.findById(id);
-        if (response.isEmpty()) {
-            throw new RuntimeException("Voto não encontrado");
+        if (yes > no) {
+            result = "Approved";
+        } else if (yes < no) {
+            result = "Rejected";
+        } else {
+            result = "Tie";
         }
 
-        voteRepository.deleteById(id);
-    }
-
-    public VoteEntity updateVoteById(UUID id, VoteEntity newVote) {
-        var response = voteRepository.findById(id);
-        if (response.isEmpty()) {
-            throw new RuntimeException("Voto não encontrado");
-        }
-
-        response.get().setVote(newVote.isVote());
-        return voteRepository.save(response.get());
+        return new VoteResultDto(idSchedule, yes, no, result);
     }
 }

@@ -29,11 +29,5 @@ public class UserController {
         return userService.postUser(userEntity);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletById(@PathVariable UUID id) {
-        userService.deletById(id);
-    }
-
-
 
 }
