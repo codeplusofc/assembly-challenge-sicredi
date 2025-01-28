@@ -1,9 +1,11 @@
 package com.votation.api.service;
 
 import com.votation.api.dto.VoteResultDto;
+import com.votation.api.entity.ScheduleEntity;
 import com.votation.api.entity.VoteEntity;
 import com.votation.api.repository.ScheduleRepository;
 import com.votation.api.repository.VoteRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,11 @@ public class VoteService {
 
     public VoteResultDto calculateVoteResult(UUID idSchedule) {
         var votes = voteRepository.findByIdSchedule(idSchedule);
+        var schedule = scheduleRepository.findById(idSchedule);
+
+        if (!schedule.get().isSessionOpen()) {
+            throw new RuntimeException("Vote session closed");
+        }
 
         int yes = 0;
         int no = 0;
@@ -45,5 +52,16 @@ public class VoteService {
         }
 
         return new VoteResultDto(idSchedule, yes, no, result);
+    }
+
+    public void startVotingSession(UUID idSchedule) {
+        var schedule = scheduleRepository.findById(idSchedule);
+
+        if (schedule.isEmpty()) {
+            throw new ObjectNotFoundException(idSchedule, ScheduleEntity.class.getSimpleName());
+        }
+
+        //TODO set the boolean sessionopen for a specific period of time
+
     }
 }
