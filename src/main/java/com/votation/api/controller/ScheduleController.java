@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -14,7 +13,6 @@ import java.util.UUID;
 public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
-
 
     @GetMapping
     public List<ScheduleEntity> getAllSchedules() {
@@ -30,4 +28,7 @@ public class ScheduleController {
     public ScheduleEntity postSchedule(@RequestBody ScheduleEntity scheduleEntity) {
         return scheduleService.postSchedule(scheduleEntity);
     }
+
+
+
 }
