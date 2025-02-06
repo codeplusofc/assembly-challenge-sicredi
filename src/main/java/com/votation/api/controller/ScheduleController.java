@@ -50,6 +50,9 @@ public class ScheduleController {
         return scheduleService.postSchedule(scheduleEntity);
     }
 
-
+    @PostMapping("/session")
+    public ScheduleEntity startVotingSession(@RequestBody ScheduleEntity scheduleEntity) {
+        return scheduleService.startVotingSession(scheduleEntity);
+    }
 
 }

@@ -1,7 +1,9 @@
 package com.votation.api.service;
 
+import com.votation.api.dto.user.InUser;
+import com.votation.api.dto.user.OutUser;
 import com.votation.api.entity.UserEntity;
-import com.votation.api.exception.BadRequestException;
+import com.votation.api.mapper.UserMapper;
 import com.votation.api.repository.UserRepository;
 
 import org.hibernate.ObjectNotFoundException;
@@ -15,13 +17,13 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserMapper userMapper;
 
-    public UserEntity postUser(UserEntity userEntity){
-        if (userEntity.getName().isEmpty()) {
-            throw new BadRequestException("Blank name, invalid");
-        }
+    public OutUser postUser(InUser userInput) {
+        var user = userMapper.inUserEntityDtoToUserEntity(userInput);
 
-        return userRepository.save(userEntity);
+        return userMapper.outUserEntityDtoToUserEntity(userRepository.save(user));
     }
 
     public List<UserEntity> getAllUsers() {

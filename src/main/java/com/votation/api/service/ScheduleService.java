@@ -9,6 +9,9 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +38,28 @@ public class ScheduleService {
              throw new ObjectNotFoundException(id, ScheduleEntity.class.getSimpleName());
          }
          return response.get();
+    }
+
+
+    public ScheduleEntity startVotingSession(ScheduleEntity scheduleEntity) {
+        var response = scheduleRepository.findById(scheduleEntity.getId());
+        var date = LocalDateTime.now();
+
+        if (response.isPresent()) {
+            if (response.get().getDeadline() == null) {
+                if (scheduleEntity.getDeadline() != null) {
+                    response.get().setDeadline(scheduleEntity.getDeadline());
+                    return scheduleRepository.save(response.get());
+                } else {
+                    response.get().setDeadline(date.plusMinutes(1));
+                    return scheduleRepository.save(response.get());
+                }
+            }
+
+        }
+
+        throw new RuntimeException("Non existing schedule");
+
     }
 
 

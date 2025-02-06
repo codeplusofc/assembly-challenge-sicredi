@@ -9,6 +9,8 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -25,11 +27,6 @@ public class VoteService {
 
     public VoteResultDto calculateVoteResult(UUID idSchedule) {
         var votes = voteRepository.findByIdSchedule(idSchedule);
-        var schedule = scheduleRepository.findById(idSchedule);
-
-        if (!schedule.get().isSessionOpen()) {
-            throw new RuntimeException("Vote session closed");
-        }
 
         int yes = 0;
         int no = 0;
@@ -54,14 +51,4 @@ public class VoteService {
         return new VoteResultDto(idSchedule, yes, no, result);
     }
 
-    public void startVotingSession(UUID idSchedule) {
-        var schedule = scheduleRepository.findById(idSchedule);
-
-        if (schedule.isEmpty()) {
-            throw new ObjectNotFoundException(idSchedule, ScheduleEntity.class.getSimpleName());
-        }
-
-        //TODO set the boolean sessionopen for a specific period of time
-
-    }
 }
