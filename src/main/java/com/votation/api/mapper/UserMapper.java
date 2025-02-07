@@ -12,7 +12,7 @@ public abstract class UserMapper {
 
     public static final UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    public abstract UserEntity inUserEntityDtoToUserEntity(InUser inUserDto);
+    public abstract UserEntity map(InUser inUserDto);
 
-    public abstract OutUser outUserEntityDtoToUserEntity(UserEntity userEntity);
+    public abstract OutUser map(UserEntity userEntity);
 }

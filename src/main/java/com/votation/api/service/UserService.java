@@ -20,16 +20,19 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    //TODO: Implementar validação para o nome de usuário
     public OutUser postUser(InUser userInput) {
-        var user = userMapper.inUserEntityDtoToUserEntity(userInput);
+        var user = userMapper.map(userInput);
 
-        return userMapper.outUserEntityDtoToUserEntity(userRepository.save(user));
+        return userMapper.map(userRepository.save(user));
     }
 
+    //TODO: Utilizar a camada de Mapper nesta funcionalidade
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
+    //TODO: Utilizar a camada de Mapper nesta funcionalidade
     public UserEntity getUserById(UUID id) {
         var response = userRepository.findById(id);
         if (response.isEmpty()) {

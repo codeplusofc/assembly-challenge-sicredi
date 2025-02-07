@@ -1,15 +1,15 @@
-package com.votation.api.dto;
+package com.votation.api.dto.vote;
 
 
 import java.util.UUID;
 
-public class VoteResultDto {
+public class OutVoteResult {
     private UUID idSchedule;
     private int yesVotes;
     private int noVotes;
     private String result;
 
-    public VoteResultDto(UUID idSchedule, int yesVotes, int noVotes, String result) {
+    public OutVoteResult(UUID idSchedule, int yesVotes, int noVotes, String result) {
         this.idSchedule = idSchedule;
         this.yesVotes = yesVotes;
         this.noVotes = noVotes;

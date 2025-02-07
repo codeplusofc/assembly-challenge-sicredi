@@ -7,11 +7,6 @@ public class InSchedule {
     private String description;
     private LocalDateTime deadline;
 
-    public InSchedule(String description, LocalDateTime deadline) {
-        this.description = description;
-        this.deadline = deadline;
-    }
-
     public String getDescription() {
         return description;
     }

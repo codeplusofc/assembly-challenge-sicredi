@@ -9,18 +9,21 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
+
+
 @Service
 public class ScheduleService {
+
     @Autowired
     private ScheduleRepository scheduleRepository;
 
     public ScheduleEntity postSchedule(ScheduleEntity scheduleEntity){
+
+        //TODO: Criar camada(package) de validator e migrar essa função
         if (scheduleEntity.getDescription().isEmpty()) {
             throw new BadRequestException("Description missing");
         }
@@ -29,10 +32,12 @@ public class ScheduleService {
     }
 
     public List<ScheduleEntity> getAllSchedules() {
+        //TODO: Implementar tratamento de erro para pautas inexistentes
         return scheduleRepository.findAll();
     }
 
     public ScheduleEntity getScheduleById(UUID id) {
+        //TODO: Migrar validação de pauta vazia para outra função
         var response = scheduleRepository.findById(id);
          if (response.isEmpty()) {
              throw new ObjectNotFoundException(id, ScheduleEntity.class.getSimpleName());
@@ -42,11 +47,15 @@ public class ScheduleService {
 
 
     public ScheduleEntity startVotingSession(ScheduleEntity scheduleEntity) {
+        //TODO: Migrar essa busca por pauta para uma nova função
         var response = scheduleRepository.findById(scheduleEntity.getId());
-        var date = LocalDateTime.now();
+        var date = now();
 
+        //TODO: Migrar validação de pauta presente para uma nova função
         if (response.isPresent()) {
+            //TODO: Migrar validação da pauta do banco de dados com prazo nulo para uma nova função
             if (response.get().getDeadline() == null) {
+                //TODO: Migrar validação da pauta com prazo diferente de nulo para uma nova função
                 if (scheduleEntity.getDeadline() != null) {
                     response.get().setDeadline(scheduleEntity.getDeadline());
                     return scheduleRepository.save(response.get());

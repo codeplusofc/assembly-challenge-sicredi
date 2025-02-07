@@ -16,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/schedule")
 public class ScheduleController {
+    //TODO:  Implementar um retorno utilizando a classe ResponseEntity para detalhar a saída
     @Autowired
     private ScheduleService scheduleService;
 
@@ -45,6 +46,7 @@ public class ScheduleController {
                 schema = @Schema(implementation = ScheduleEntity.class))),
             @ApiResponse(responseCode = "400", description = "Bad request, description is required")
     })
+
     @PostMapping
     public ScheduleEntity postSchedule(@RequestBody ScheduleEntity scheduleEntity) {
         return scheduleService.postSchedule(scheduleEntity);

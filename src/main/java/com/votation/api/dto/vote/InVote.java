@@ -5,12 +5,6 @@ public class InVote {
     private String userName;
     private boolean vote;
 
-    public InVote(String scheduleDescription, String userName, boolean vote) {
-        this.scheduleDescription = scheduleDescription;
-        this.userName = userName;
-        this.vote = vote;
-    }
-
     public String getScheduleDescription() {
         return scheduleDescription;
     }
