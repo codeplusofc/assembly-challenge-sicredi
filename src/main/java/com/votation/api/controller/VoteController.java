@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,8 +28,10 @@ public class VoteController {
                 schema = @Schema(implementation = VoteEntity.class)))
     })
     @PostMapping
-    public VoteEntity postVote(@RequestBody VoteEntity voteEntity) {
-        return voteService.postVote(voteEntity);
+    public ResponseEntity<VoteEntity> postVote(@RequestBody VoteEntity voteEntity) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(voteService.postVote(voteEntity));
     }
 
     @Operation(summary = "Get schedule voting result", description = "Calculate a result for a schedule voting if the voting is already over")

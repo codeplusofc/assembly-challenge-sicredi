@@ -21,8 +21,8 @@ public class UserService {
     private UserMapper userMapper;
 
     //TODO: Implementar validação para o nome de usuário
-    public OutUser postUser(InUser userInput) {
-        var user = userMapper.map(userInput);
+    public OutUser postUser(InUser inUser) {
+        var user = userMapper.map(inUser);
 
         return userMapper.map(userRepository.save(user));
     }
