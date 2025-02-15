@@ -14,12 +14,10 @@ public class ScheduleValidator {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    //TODO: Lógica incorreta, precisa arrumar
     public ScheduleEntity verifyNullDeadline(ScheduleEntity scheduleEntity) {
         var response = scheduleRepository.findById(scheduleEntity.getId());
 
-        if (response.get().getDeadline() == null) {
-            //TODO: Validar se o prazo que está vindo na pauta da abertura de sessão está nulo
+        if (response.get().getDeadline() != null) {
             response.get().setDeadline(scheduleEntity.getDeadline());
         } else {
             setDeadlineSession(response);

@@ -48,13 +48,11 @@ public class ScheduleService {
         var response = scheduleRepository.findById(scheduleEntity.getId());
 
         if (response.isPresent()) {
-            //TODO: PRECISA ARRUMAR
-            scheduleValidator.verifyNullDeadline(response.get());
+            return scheduleRepository.save(scheduleValidator.verifyNullDeadline(response.get()));
         } else {
             throw new ObjectNotFoundException(scheduleEntity.getId(), ScheduleEntity.class.getSimpleName());
         }
 
-        return scheduleRepository.save(response.get());
     }
 
     private ScheduleEntity findScheduleById(UUID id) {
