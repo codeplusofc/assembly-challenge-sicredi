@@ -3,9 +3,6 @@ package com.votation.api.dto.user;
 public class InUser {
     private String name;
 
-    public InUser() {
-    }
-
     public String getName() {
         return name;
     }

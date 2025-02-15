@@ -10,7 +10,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +30,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User list successfully returned")
     })
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getAllUsers() {
+    public ResponseEntity<List<OutUser>> getAllUsers() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getAllUsers());
@@ -40,7 +42,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User with searched id not found")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<OutUser> getUserById(@PathVariable UUID id) {
        return ResponseEntity
                .status(HttpStatus.OK)
                .body(userService.getUserById(id));
@@ -54,11 +56,10 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad request, name is required")
     })
     @PostMapping
-        public ResponseEntity<OutUser> postUser(@RequestBody InUser inUser) {
+    public ResponseEntity<OutUser> postUser(@RequestBody InUser inUser) {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(userService.postUser(inUser));
-
     }
 
 

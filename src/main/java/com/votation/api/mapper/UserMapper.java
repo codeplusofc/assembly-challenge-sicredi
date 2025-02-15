@@ -18,4 +18,5 @@ public abstract class UserMapper {
 
     public abstract OutUser map(UserEntity userEntity);
 
+    public abstract List<OutUser> map(List<UserEntity> userEntities);
 }
