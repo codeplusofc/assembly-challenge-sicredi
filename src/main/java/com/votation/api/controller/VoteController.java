@@ -1,7 +1,6 @@
 package com.votation.api.controller;
 
-import com.votation.api.dto.VoteResultDto;
-import com.votation.api.entity.ScheduleEntity;
+import com.votation.api.dto.vote.OutVoteResult;
 import com.votation.api.entity.VoteEntity;
 import com.votation.api.service.VoteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +35,9 @@ public class VoteController {
             @ApiResponse(responseCode = "200", description = "Schedule results returned successfully"),
     })
     @GetMapping("/result/{idSchedule}")
-    public VoteResultDto getScheduleResult(@PathVariable UUID idSchedule) {
+    public OutVoteResult getScheduleResult(@PathVariable UUID idSchedule) {
         return voteService.calculateVoteResult(idSchedule);
     }
+
 
 }

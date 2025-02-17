@@ -1,10 +1,10 @@
 package com.votation.api.controller;
 
-import com.votation.api.entity.ScheduleEntity;
+import com.votation.api.dto.user.InUser;
+import com.votation.api.dto.user.OutUser;
 import com.votation.api.entity.UserEntity;
 import com.votation.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,8 +48,8 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad request, name is required")
     })
     @PostMapping
-    public UserEntity postUser(@RequestBody UserEntity userEntity) {
-        return userService.postUser(userEntity);
+    public OutUser postUser(@RequestBody InUser inUser) {
+        return userService.postUser(inUser);
     }
 
 

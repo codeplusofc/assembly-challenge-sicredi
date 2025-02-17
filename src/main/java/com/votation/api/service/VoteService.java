@@ -1,11 +1,9 @@
 package com.votation.api.service;
 
-import com.votation.api.dto.VoteResultDto;
-import com.votation.api.entity.ScheduleEntity;
+import com.votation.api.dto.vote.OutVoteResult;
 import com.votation.api.entity.VoteEntity;
 import com.votation.api.repository.ScheduleRepository;
 import com.votation.api.repository.VoteRepository;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +11,27 @@ import java.util.UUID;
 
 @Service
 public class VoteService {
-    @Autowired
-    private VoteRepository voteRepository;
 
     @Autowired
+    private VoteRepository voteRepository;
+    @Autowired
     private ScheduleRepository scheduleRepository;
+
+    //TODO: Criar camada mapper para as funcionalidades de voto
 
     public VoteEntity postVote(VoteEntity voteEntity) {
         return voteRepository.save(voteEntity);
     }
 
-    public VoteResultDto calculateVoteResult(UUID idSchedule) {
+    public OutVoteResult calculateVoteResult(UUID idSchedule) {
         var votes = voteRepository.findByIdSchedule(idSchedule);
-        var schedule = scheduleRepository.findById(idSchedule);
-
-        if (!schedule.get().isSessionOpen()) {
-            throw new RuntimeException("Vote session closed");
-        }
 
         int yes = 0;
         int no = 0;
         String result = "result";
 
+        //TODO: Migrar essa lógica de contabilidade de votos para uma nova função
+        //TODO: Implementar uma abordagem mais elegante para percorrer a lista de votos
         for (int i = 0; i < votes.size(); i++) {
             if (votes.get(i).isVote()) {
                 yes++;
@@ -43,6 +40,7 @@ public class VoteService {
             }
         }
 
+        //TODO: Migrar essa lógica de validação do resultado para uma nova função
         if (yes > no) {
             result = "Approved";
         } else if (yes < no) {
@@ -51,17 +49,7 @@ public class VoteService {
             result = "Tie";
         }
 
-        return new VoteResultDto(idSchedule, yes, no, result);
+        return new OutVoteResult(idSchedule, yes, no, result);
     }
 
-    public void startVotingSession(UUID idSchedule) {
-        var schedule = scheduleRepository.findById(idSchedule);
-
-        if (schedule.isEmpty()) {
-            throw new ObjectNotFoundException(idSchedule, ScheduleEntity.class.getSimpleName());
-        }
-
-        //TODO set the boolean sessionopen for a specific period of time
-
-    }
 }
