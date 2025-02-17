@@ -10,6 +10,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +30,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User list successfully returned")
     })
     @GetMapping
-    public List<UserEntity> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<OutUser>> getAllUsers() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getAllUsers());
     }
 
     @Operation(summary = "Find a user by it`s id", description = "Return the user with the searched id")
@@ -36,8 +42,10 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User with searched id not found")
     })
     @GetMapping("/{id}")
-    public UserEntity getUserById(@PathVariable UUID id) {
-        return userService.getUserById(id);
+    public ResponseEntity<OutUser> getUserById(@PathVariable UUID id) {
+       return ResponseEntity
+               .status(HttpStatus.OK)
+               .body(userService.getUserById(id));
     }
 
     @Operation(summary = "Post new user", description = "Add a new user to the database")
@@ -48,8 +56,10 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad request, name is required")
     })
     @PostMapping
-    public OutUser postUser(@RequestBody InUser inUser) {
-        return userService.postUser(inUser);
+    public ResponseEntity<OutUser> postUser(@RequestBody InUser inUser) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService.postUser(inUser));
     }
 
 

@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,10 @@ public class ScheduleController {
             @ApiResponse(responseCode = "200", description = "Schedule list successfully returned")
     })
     @GetMapping
-    public List<ScheduleEntity> getAllSchedules() {
-        return scheduleService.getAllSchedules();
+    public ResponseEntity<List<ScheduleEntity>> getAllSchedules() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(scheduleService.getAllSchedules());
     }
 
     @Operation(summary = "Find a schedule by it`s id", description = "Return the schedule with the searched id")
@@ -35,26 +39,32 @@ public class ScheduleController {
             @ApiResponse(responseCode = "404", description = "Schedule with searched id not found")
     })
     @GetMapping("/{id}")
-    public ScheduleEntity getScheduleById(@PathVariable UUID id) {
-        return scheduleService.getScheduleById(id);
+    public ResponseEntity<ScheduleEntity> getScheduleById(@PathVariable UUID id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(scheduleService.getScheduleById(id));
     }
 
     @Operation(summary = "Post new schedule", description = "Add a new schedule to the database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Schedule added successfully",
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = ScheduleEntity.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ScheduleEntity.class))),
             @ApiResponse(responseCode = "400", description = "Bad request, description is required")
     })
 
     @PostMapping
-    public ScheduleEntity postSchedule(@RequestBody ScheduleEntity scheduleEntity) {
-        return scheduleService.postSchedule(scheduleEntity);
+    public ResponseEntity<ScheduleEntity> postSchedule(@RequestBody ScheduleEntity scheduleEntity) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(scheduleService.postSchedule(scheduleEntity));
     }
 
     @PostMapping("/session")
-    public ScheduleEntity startVotingSession(@RequestBody ScheduleEntity scheduleEntity) {
-        return scheduleService.startVotingSession(scheduleEntity);
+    public ResponseEntity<ScheduleEntity> startVotingSession(@RequestBody ScheduleEntity scheduleEntity) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(scheduleService.startVotingSession(scheduleEntity));
     }
 
 }
